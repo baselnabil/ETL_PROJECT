@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: DW
+      MYSQL_USER: user
+      MYSQL_PASSWORD: new_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  postgres_db:
+    image: postgres:13
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: DW
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  sqlserver_db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver_db
+    environment:
+      SA_PASSWORD: root
+      ACCEPT_EULA: "Y"
+      MSSQL_AGENT_ENABLED: "true"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./ssis/packages:/var/opt/mssql/packages
+
+  jupyter:
+    build: .
+    container_name: jupyter
+    environment:
+      JUPYTER_ENABLE_LAB: "yes"
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    command: >
+      start-notebook.sh --NotebookApp.token=''
+    depends_on:
+      - mysql_db
+      - postgres_db
+      - sqlserver_db
