@@ -1,3 +1,6 @@
 .vscode/
 .ipynb_checkpoints/
-.data/raw/crash_data.csv
+data/raw/*
+!data/raw/
+data/loaded/*
+!data/loaded/
