@@ -98,27 +98,38 @@ CREATE TABLE Fact_crash (
 );
 
 
-
 INSERT INTO Fact_crash
-( ReportNumberID, roadlocationID,
-  VehicleID, driverpersonID,
-  incidentdetailsID, Number_of_Crashes,
-  Number_of_Injured, Most_Common_CrashType,
-  Most_Common_Weather )
-SELECT r.ID AS ReportNumberID, rl.ID AS roadlocationID,
-       v.ID AS VehicleID, dp.ID AS driverpersonID,
-       id.ID AS incidentdetailsID, COUNT(*) AS Number_of_Crashes,
-       SUM(CASE 
-            WHEN id.Injury_Severity IS NOT NULL 
-            AND id.Injury_Severity != 'NO APPARENT INJURY' 
-            THEN CAST(id.Injury_Severity AS INTEGER) 
-            ELSE 0 
-        END) AS Number_of_Injured,
-      (SELECT Collision_Type FROM Dim_incident_details WHERE id.ID = Dim_incident_details.ID GROUP BY Collision_Type ORDER BY COUNT(*) DESC LIMIT 1) AS Most_Common_CrashType,
-      (SELECT Weather FROM Dim_incident_details WHERE id.ID = Dim_incident_details.ID GROUP BY Weather ORDER BY COUNT(*) DESC LIMIT 1) AS Most_Common_Weather FROM Dim_report_case r
-      
+(
+    ReportNumberID, roadlocationID, VehicleID, driverpersonID, incidentdetailsID,
+    Number_of_Crashes, Number_of_Injured, Most_Common_CrashType, Most_Common_Weather
+)
+SELECT
+    NULL AS ReportNumberID,
+    NULL AS roadlocationID,
+    NULL AS VehicleID,
+    NULL AS driverpersonID,
+    NULL AS incidentdetailsID,
+    COUNT(*) AS Number_of_Crashes,
+    COUNT(
+        CASE
+            WHEN id.Injury_Severity IS NOT NULL
+                 AND id.Injury_Severity != 'NO APPARENT INJURY'
+            THEN 1
+            ELSE NULL
+        END
+    ) AS Number_of_Injured,
+    (SELECT Collision_Type
+     FROM Dim_incident_details
+     GROUP BY Collision_Type
+     ORDER BY COUNT(*) DESC
+     LIMIT 1) AS Most_Common_CrashType, 
+    (SELECT Weather
+     FROM Dim_incident_details
+     GROUP BY Weather
+     ORDER BY COUNT(*) DESC
+     LIMIT 1) AS Most_Common_Weather 
+FROM Dim_report_case r
 JOIN Dim_road_location rl ON r.ID = rl.ID
 JOIN Dim_vehicle v ON r.ID = v.ID
 JOIN Dim_driver_person dp ON r.ID = dp.ID
-JOIN Dim_incident_details id ON r.ID = id.ID
-GROUP BY r.ID, rl.ID, v.ID, dp.ID, id.ID;
+JOIN Dim_incident_details id ON r.ID = id.ID;
