@@ -75,7 +75,7 @@ FROM '/mnt/newVol/Work/ETL_PROJECT/data/loaded/driver_person.txt' DELIMITER ',' 
 copy Dim_incident_details(ID, Collision_Type, Weather, Surface_Condition, Light, Traffic_Control, Injury_Severity)
 FROM '/mnt/newVol/Work/ETL_PROJECT/data/loaded/incident_details.txt' DELIMITER ',' CSV HEADER;
 
-
+SELECT * from dim_incident_details;
 
 DROP TABLE IF EXISTS Fact_crash;
 CREATE TABLE Fact_crash (
@@ -96,3 +96,29 @@ CREATE TABLE Fact_crash (
     FOREIGN KEY (driverpersonID) REFERENCES Dim_driver_person(ID),
     FOREIGN KEY (incidentdetailsID) REFERENCES Dim_incident_details(ID)
 );
+
+
+
+INSERT INTO Fact_crash
+( ReportNumberID, roadlocationID,
+  VehicleID, driverpersonID,
+  incidentdetailsID, Number_of_Crashes,
+  Number_of_Injured, Most_Common_CrashType,
+  Most_Common_Weather )
+SELECT r.ID AS ReportNumberID, rl.ID AS roadlocationID,
+       v.ID AS VehicleID, dp.ID AS driverpersonID,
+       id.ID AS incidentdetailsID, COUNT(*) AS Number_of_Crashes,
+       SUM(CASE 
+            WHEN id.Injury_Severity IS NOT NULL 
+            AND id.Injury_Severity != 'NO APPARENT INJURY' 
+            THEN CAST(id.Injury_Severity AS INTEGER) 
+            ELSE 0 
+        END) AS Number_of_Injured,
+      (SELECT Collision_Type FROM Dim_incident_details WHERE id.ID = Dim_incident_details.ID GROUP BY Collision_Type ORDER BY COUNT(*) DESC LIMIT 1) AS Most_Common_CrashType,
+      (SELECT Weather FROM Dim_incident_details WHERE id.ID = Dim_incident_details.ID GROUP BY Weather ORDER BY COUNT(*) DESC LIMIT 1) AS Most_Common_Weather FROM Dim_report_case r
+      
+JOIN Dim_road_location rl ON r.ID = rl.ID
+JOIN Dim_vehicle v ON r.ID = v.ID
+JOIN Dim_driver_person dp ON r.ID = dp.ID
+JOIN Dim_incident_details id ON r.ID = id.ID
+GROUP BY r.ID, rl.ID, v.ID, dp.ID, id.ID;
