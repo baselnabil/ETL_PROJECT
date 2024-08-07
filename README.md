@@ -1,4 +1,6 @@
-# Project Overview
+# Project Overview 
+![Overview](project_images/overview.jpeg)
+
 
 ## Extraction Process
 - We began by downloading the data as a CSV file from Kaggle.
@@ -70,4 +72,5 @@ We used the business model to guide our analysis, including:
 - An interactive dashboard was created using Power BI to visualize and analyze the data, providing insights into vehicle crash accidents.
 
 ## Version Control and Docker
+![docker](project_images/docker.png)[git](project_images/git.png)
 - The project was managed using version control (Git) and deployed with Docker Compose. The Docker configuration includes services for MySQL, PostgreSQL, SQL Server, and Jupyter notebooks.
