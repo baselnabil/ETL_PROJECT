@@ -39,6 +39,7 @@ The data transformation process followed the business model guidelines for handl
 
 ## Loading the Data
 - We utilized multiple databases for loading the data and created schemas for PostgreSQL, MySQL, and SQL Server.
+
 ![mysql](project_images/mysql.png)
 ![postgres](project_images/postgres.jpeg)
 ![sqlserver](project_images/sqlserver.png)
