@@ -47,6 +47,7 @@ The data transformation process followed the business model guidelines for handl
 
 ## Using SSIS
 - SQL Server Integration Services (SSIS) was used to automate the ETL process with workflows and data flows for transforming data and performing queries.
+
 ![SSIS](project_images/sssis.png)
 
 
