@@ -39,9 +39,15 @@ The data transformation process followed the business model guidelines for handl
 
 ## Loading the Data
 - We utilized multiple databases for loading the data and created schemas for PostgreSQL, MySQL, and SQL Server.
+![mysql](project_images/mysql.png)
+![postgres](project_images/postgres.jpeg)
+![sqlserver](project_images/sqlserver.png)
+
 
 ## Using SSIS
 - SQL Server Integration Services (SSIS) was used to automate the ETL process with workflows and data flows for transforming data and performing queries.
+![SSIS](project_images/sssis.png)
+
 
 ## Analysis
 We used the business model to guide our analysis, including:
@@ -72,5 +78,6 @@ We used the business model to guide our analysis, including:
 - An interactive dashboard was created using Power BI to visualize and analyze the data, providing insights into vehicle crash accidents.
 
 ## Version Control and Docker
-![docker](project_images/docker.png)[git](project_images/git.png)
+![docker](project_images/docker.png)
+![git](project_images/git.png)
 - The project was managed using version control (Git) and deployed with Docker Compose. The Docker configuration includes services for MySQL, PostgreSQL, SQL Server, and Jupyter notebooks.
