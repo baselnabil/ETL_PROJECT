@@ -1,6 +1,5 @@
-CREATE DATABASE DW;
-
-USE DW;
+CREATE DATABASE denormalized_dw;
+USE denormalized_dw;
 
 CREATE TABLE crash_reports (
     report_number VARCHAR(255) PRIMARY KEY,
