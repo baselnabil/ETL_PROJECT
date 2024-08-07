@@ -11,7 +11,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./dockerinit/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
     logging:
       driver: "json-file"
       options:
@@ -29,7 +29,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./dockerinit/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   sqlserver_db:
     image: mcr.microsoft.com/mssql/server:2019-latest
