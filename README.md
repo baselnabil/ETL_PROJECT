@@ -1,7 +1,6 @@
 # Project Overview 
 ![Overview](project_images/overview.jpeg)
 
-
 ## Extraction Process
 - We began by downloading the data as a CSV file from Kaggle.
 - The data was then split into multiple CSV and TXT files to prepare it for integration into the data warehouse (DW) model.
@@ -37,19 +36,37 @@ The data transformation process followed the business model guidelines for handl
 4. **Column Filtering:**
    - Remove irrelevant or non-contributing columns.
 
-## Loading the Data
-- We utilized multiple databases for loading the data and created schemas for PostgreSQL, MySQL, and SQL Server.
+## Data Warehouse Model
+The data warehouse model was meticulously designed to support efficient querying and reporting, structured as follows:
+
+![MODEL](project_images/model.jpeg)
+
+### MySQL Data Warehouse Model
+- **Schema:** Designed and implemented with normalized tables to minimize redundancy.
+- **Relationships:** Established through primary and foreign keys to ensure data consistency.
+- **Indexing:** Applied indexing to enhance performance, particularly in large datasets.
 
 ![mysql](project_images/mysql.png)
-![postgres](project_images/postgres.jpeg)
-![sqlserver](project_images/sqlserver.png)
 
+### PostgreSQL Data Warehouse Model
+- **Star Schema:** Developed to facilitate quick and efficient analytical queries.
+- **Fact and Dimension Tables:** Structured to support complex reporting requirements.
+- **Optimizations:** Performance optimizations implemented, including indexing and query optimization techniques.
+
+![postgres](project_images/postgres.jpeg)
+
+### SQL Server Data Warehouse Model
+- **Integration:** Leveraged SQL Server’s capabilities for integration with SSIS and other Microsoft tools.
+- **Data Integrity:** Ensured data integrity through constraints and relationships.
+- **Performance:** Optimized loading processes for handling large volumes of data.
+
+![sqlserver](project_images/sqlserver.png)
 
 ## Using SSIS
 - SQL Server Integration Services (SSIS) was used to automate the ETL process with workflows and data flows for transforming data and performing queries.
 
 ![SSIS](project_images/sssis.png)
-
+![SSIS_OP](project_images/workflow.jpeg)
 
 ## Analysis
 We used the business model to guide our analysis, including:
