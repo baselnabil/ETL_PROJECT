@@ -78,6 +78,8 @@ We used the business model to guide our analysis, including:
 - **Temporal Analysis:** Patterns by time of day, week, and month.
 - **Driverless and Parked Vehicle Analysis:** Involvement of driverless and parked vehicles.
 
+![DASHBOARD1](project_images/dashboard1.jpeg)
+
 ### Additional Analyses
 - **Weather Condition Analysis:** Impact of weather on crash frequency.
 - **Driver Demographics Analysis:** High-risk driver demographics.
@@ -88,10 +90,14 @@ We used the business model to guide our analysis, including:
 - **Repeat Offender Analysis:** Patterns of repeat offenders.
 - **Seatbelt Usage Analysis:** Impact of seatbelt usage on crash severity.
 
+![DASHBOARD2](project_images/dashboard2.jpeg)
+
 ## Adding Constraints and Analytics
 1. **Data Integrity:** Implementation of constraints for data integrity.
 2. **Analytical Capabilities:** Comprehensive analytics for crash factors.
 3. **Reporting:** Reporting solutions for actionable insights.
+
+![DASHBOARD](project_images/dashboard3.jpeg)
 
 ## Power BI Dashboard
 - An interactive dashboard was created using Power BI to visualize and analyze the data, providing insights into vehicle crash accidents.
