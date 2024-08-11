@@ -1,5 +1,5 @@
 import os
-import psycopg2 as psycopg
+import psycopg
 
 basepath = os.path.dirname(__file__)
 default_path = os.path.abspath(os.path.join(basepath, '../data/'))

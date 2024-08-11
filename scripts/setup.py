@@ -46,3 +46,5 @@ def run_script(script_name, script_path, color, optionalCmd=''):
 
 run_script('DataSpliter.ipynb', '', YELLOW, [ "jupyter", "execute", "data/DataSpliter.ipynb"])
 run_script('file.py','./scripts/postgres.py', YELLOW)
+run_script('SSIS > package,dtsx','', YELLOW, ['dtexec', '/F', 'ssis/package.dtsx'])
+
