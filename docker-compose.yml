@@ -52,8 +52,6 @@ services:
       - "8888:8888"
     volumes:
       - ./notebooks:/home/jovyan/work
-    command: >
-      start-notebook.sh --NotebookApp.token=''
     depends_on:
       - mysql_db
       - postgres_db
