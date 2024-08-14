@@ -11,6 +11,21 @@ CREATE TABLE Dim_report_case (
     Location VARCHAR
 );
 
+DROP TABLE IF EXISTS Dim_Time;
+CREATE TABLE Dim_Time (
+    ID SERIAL PRIMARY KEY,
+    Date DATE,
+    TimeS TIMESTAMP,
+    Year INT,
+    Month INT,
+    Day INT,
+    Hour INT,
+    Minute INT,
+    Second INT,
+    AM_PM VARCHAR(2)
+);
+
+
 DROP TABLE IF EXISTS Dim_road_location;
 CREATE TABLE Dim_road_location (
     ID SERIAL PRIMARY KEY,
@@ -62,9 +77,7 @@ CREATE TABLE Dim_incident_details (
     Injury_Severity VARCHAR
 );
 
-
 -- IMPORT DATA
-
 
 
 copy Dim_report_case(ID, Report_Number, Local_Case_Number, Agency_Name, ACRS_Report_Type, Crash_Date_Time, Location)
@@ -83,12 +96,32 @@ copy Dim_incident_details(ID, Collision_Type, Weather, Surface_Condition, Light,
 FROM '{{DATA_PATH}}/loaded/incident_details.txt' DELIMITER ',' CSV HEADER;
 
 
+INSERT INTO Dim_Time (ID, Date, TimeS, Year, Month, Day, Hour, Minute, Second, AM_PM)
+SELECT 
+    r.ID AS ID,
+    DATE(r.Crash_Date_Time) AS Date,
+    r.Crash_Date_Time AS TimeS,
+    EXTRACT(YEAR FROM r.Crash_Date_Time) AS Year,
+    EXTRACT(MONTH FROM r.Crash_Date_Time) AS Month,
+    EXTRACT(DAY FROM r.Crash_Date_Time) AS Day,
+    EXTRACT(HOUR FROM r.Crash_Date_Time) AS Hour,
+    EXTRACT(MINUTE FROM r.Crash_Date_Time) AS Minute,
+    EXTRACT(SECOND FROM r.Crash_Date_Time) AS Second,
+    CASE 
+        WHEN EXTRACT(HOUR FROM r.Crash_Date_Time) < 12 THEN 'AM'
+        ELSE 'PM'
+    END AS AM_PM
+FROM Dim_report_case r;
+
+
+ALTER TABLE Dim_report_case DROP COLUMN Crash_Date_Time;
 
 
 DROP TABLE IF EXISTS Fact_crash;
 CREATE TABLE Fact_crash (
     ID SERIAL PRIMARY KEY,
     ReportNumberID INT,
+    TimeID INT,
     roadlocationID INT,
     VehicleID INT,
     driverpersonID INT,
@@ -99,6 +132,7 @@ CREATE TABLE Fact_crash (
     Most_Common_Weather VARCHAR,
 
     FOREIGN KEY (ReportNumberID) REFERENCES Dim_report_case(ID),
+    FOREIGN KEY (TimeID) REFERENCES Dim_Time(ID),
     FOREIGN KEY (roadlocationID) REFERENCES Dim_road_location(ID),
     FOREIGN KEY (VehicleID) REFERENCES Dim_vehicle(ID),
     FOREIGN KEY (driverpersonID) REFERENCES Dim_driver_person(ID),
@@ -125,6 +159,7 @@ INSERT INTO Fact_crash
 )
 SELECT
     NULL AS ReportNumberID,
+    NULL AS TimeID,
     NULL AS roadlocationID,
     NULL AS VehicleID,
     NULL AS driverpersonID,
