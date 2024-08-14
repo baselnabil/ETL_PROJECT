@@ -83,5 +83,17 @@ CREATE TABLE date_description (
 );
 
 
+CREATE TABLE date (
+    date_id INT IDENTITY(1,1) PRIMARY KEY,
+    date DATE NOT NULL,
+    year INT NOT NULL,
+    quarter INT NOT NULL,
+    month INT NOT NULL,
+    month_name VARCHAR(20) NOT NULL,
+    day INT NOT NULL,
+    day_name VARCHAR(20) NOT NULL,
+    week INT NOT NULL,
+    is_weekend BIT NOT NULL
+);
 
 
