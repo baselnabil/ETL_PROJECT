@@ -1,4 +1,4 @@
--- DIM TABLES
+-- DIM TABLES FOR THE MODEL
 
 DROP TABLE IF EXISTS Dim_report_case;
 CREATE TABLE Dim_report_case (
@@ -77,7 +77,7 @@ CREATE TABLE Dim_incident_details (
     Injury_Severity VARCHAR
 );
 
--- IMPORT DATA
+-- IMPORT DATA INTO DIM TABLES
 
 
 copy Dim_report_case(ID, Report_Number, Local_Case_Number, Agency_Name, ACRS_Report_Type, Crash_Date_Time, Location)
@@ -95,6 +95,7 @@ FROM '{{DATA_PATH}}/loaded/driver_person.txt' DELIMITER ',' CSV HEADER;
 copy Dim_incident_details(ID, Collision_Type, Weather, Surface_Condition, Light, Traffic_Control, Injury_Severity)
 FROM '{{DATA_PATH}}/loaded/incident_details.txt' DELIMITER ',' CSV HEADER;
 
+-- INSERT DATA INTO DIM_TIME by extracting from Crash_Date_Time column in Dim_report_case
 
 INSERT INTO Dim_Time (ID, Date, TimeS, Year, Month, Day, Hour, Minute, Second, AM_PM)
 SELECT 
@@ -143,14 +144,7 @@ CREATE TABLE Fact_crash (
 
 
 
-
-
-
-
-
-
-
--- FACT TABLE
+-- ANALYTICS QUERIES FOR THE MODEL
 
 INSERT INTO Fact_crash
 (

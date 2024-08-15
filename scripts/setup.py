@@ -2,15 +2,18 @@ import time
 import subprocess
 import threading
 
+# Colors
 GREEN = '\033[92m'
 YELLOW = '\033[93m'
 RED = '\033[91m'
 RESET = '\033[0m'
 
+
 def run_script(script_name, script_path, color, optionalCmd=''):
     chars = ['|', '/', '-', '\\']
     
     def animate():
+        # This function will animate the running of the script
         while still_processing:
             for char in chars:
                 if not still_processing:
@@ -23,6 +26,7 @@ def run_script(script_name, script_path, color, optionalCmd=''):
     animation_thread.start()
     
     try:
+        # Run the script and check if it was successful
         time.sleep(0.3)
         if optionalCmd == '':
             subprocess.run(['python', script_path], check=True)
@@ -39,7 +43,7 @@ def run_script(script_name, script_path, color, optionalCmd=''):
         still_processing = False
         animation_thread.join()
     
-
+    # Print the result and reset the color of the text
     print(f'\n{fcolor}{result_char} | {result_text} - {script_name}')
     print(RESET, end='', flush=True)
 
